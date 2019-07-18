@@ -14,7 +14,8 @@ class ColonyAnalyzer:
         ## add counters that track numbers of resistant/nonresistant cells, etc.
         for i in range(num_cells):
             ## add code that extracts attributes of each cell and modifies counters accordingly
-
+            pass
+        
     ## data parameter type is TBD
     def write_to_csv(self, data):
         with open('colony_analysis.csv', mode = 'w') as colony_analysis:
