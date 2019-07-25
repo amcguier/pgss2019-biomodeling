@@ -3,7 +3,7 @@ from pgss.analyze import ColonyAnalyzer
 from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
-iterations = 50
+iterations = 10
 
 
 def runSimulation():
@@ -16,6 +16,7 @@ def runSimulation():
         time = updater.updateColony(colony)
         analyzer.analyze_colony(colony, time)
     analyzer.print_data()
+    analyzer.plot_data()
     #TODO: store data from analyzer in file
 
     def parse():
