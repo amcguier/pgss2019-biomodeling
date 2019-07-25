@@ -5,7 +5,8 @@ from pgss.colony import Colony
 from pgss.cell import Cell
 
 class ColonyUpdater:
-
+    hgt_probability = 1000 #Probability of hgt
+    resistant_index = []
     # Amount of time incremented (in minutes) per iteration of simulation.
     update_time = 0.5
 
@@ -17,6 +18,13 @@ class ColonyUpdater:
     #  chance of mutation
     bacteria_mutation_rate = 0.0001
     horizontal_gene_transfer_rate = 0.01
+
+
+    # TODO: switch reproduction/death rates to be stored at the individual cell level, so that we can have variation among cells
+    # Generation time in minutes
+    generation_time = 30
+    reproduction_probability_rate = math.log(2) / generation_time  # this is the k constant in the equation e^-kt
+    death_probability_rate = 0.05
 
     p_d = 0.5
     p_m = 0.5
@@ -46,7 +54,7 @@ class ColonyUpdater:
 
 
     # The following "individual methods" kill_cell, make_new_cell, transfer_plasmid, and mutate_cell operate on the individual cell
-    
+
     # deletes an individual cell at the position i in the colonypass
     def kill_cell(self, colony, i):
         del colony.cells[i]
@@ -62,7 +70,7 @@ class ColonyUpdater:
     def transfer_plasmid(self, colony, i, j):
         # TODO: change this so that we are updating the cell in place rather than deleting and creating a new cell.
         colony.cells[j].resistant = colony.cells[i].resistant
-    
+
     # changes susceptible cell to resistant, assumes the cell is already susceptible
     def mutate_cell(self, colony, i):
         # TODO: change this so that we are updating the cell in place rather than deleting and creating a new cell.
@@ -75,6 +83,30 @@ class ColonyUpdater:
     def turn_off_antibiotic1(self):
         self.antibiotic1 = False
 
+
+    def showColonySummary(self, colony):
+        print('Total number: ' + str(len(colony.cells)))
+
+    def Horizontal_Gene_Transfer(self,colony):
+        for i in range(0,len(colony.cells)):
+            cell = colony.cells[i]
+            if cell.resistant = True:
+                self.resistant_index.append(i)
+
+        for i in range (0,len(self.resistant_index)):
+            x = random.randint(0,self.hgt_probability)
+            if x == 2:
+                if self.resistant_index[i] > 0:
+                    self.transfer_plasmid(self, colony,self.resistant_index[i],self.resistant_index[i]-1) #run transfer left
+
+            else:
+                if x == 53:
+                    if self.resistant_index[i]<= colony.cells:
+                        updateColony.transfer_plasmid(self, colony,self.resistant_index[i],self.resistant_index[i]+1) #run transfer right
+
+    #Todo: add end behavior
+        self.resistant_index = []
+    
 
     # Updates colony by stochastically selecting if each cell dies, reproduces, or just survives during this iteration.
     def updateColony(self,colony):
