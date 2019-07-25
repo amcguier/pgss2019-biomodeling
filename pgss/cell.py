@@ -1,13 +1,13 @@
 class Cell:
 
-    def __init__(self, resistant, horizontal_transmission, death_rate, reproduction):
-        # initialize cell here
+    def __init__(self, resistant, horizontal_transmission, death_probability_rate, reproduction_probability_rate):
+        # Initialize cell here
         self.resistant = resistant
         self.horizontal_transmission = horizontal_transmission 
-        self.death_rate = death_rate
-        self.reproduction = reproduction
+        self.death_probability_rate = death_probability_rate
+        self.reproduction_probability_rate = reproduction_probability_rate
         
-cell_var = Cell(resistant=True, horizontal_transmission=True, death_rate=.465, reproduction=.3405729384750928374)
+cell_var = Cell(resistant=True, horizontal_transmission=True, death_probability_rate=.1, reproduction_probability_rate=.15)
 
 #reproduction is equal to one fission every twenty minutes for MRSA, 15-20 hours for TB\
 
