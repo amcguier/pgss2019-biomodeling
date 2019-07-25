@@ -18,13 +18,6 @@ class ColonyUpdater:
     bacteria_mutation_rate = 0.0001
     horizontal_gene_transfer_rate = 0.01
 
-
-    # TODO: switch reproduction/death rates to be stored at the individual cell level, so that we can have variation among cells
-    # Generation time in minutes
-    generation_time = 30
-    reproduction_probability_rate = math.log(2) / generation_time  # this is the k constant in the equation e^-kt
-    death_probability_rate = 0.05
-
     p_d = 0.5
     p_m = 0.5
     k_d = 0.3
@@ -82,9 +75,6 @@ class ColonyUpdater:
     def turn_off_antibiotic1(self):
         self.antibiotic1 = False
 
-
-    def showColonySummary(self, colony):
-        print('Total number: ' + str(len(colony.cells)))
 
     # Updates colony by stochastically selecting if each cell dies, reproduces, or just survives during this iteration.
     def updateColony(self,colony):
