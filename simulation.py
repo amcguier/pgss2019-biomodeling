@@ -3,7 +3,7 @@ from pgss.analyze import ColonyAnalyzer
 from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
-iterations = 50
+iterations = 10
 
 
 def runSimulation():
