@@ -1,64 +1,82 @@
 import math
 import cmath
+import random
+from pgss.colony import Colony
+from pgss.cell import Cell
 
 class ColonyUpdater:
 
-
-    # Kill cells
-        # if no antibiotics:
-            # number of rate of death / chance of death
-        # if yes antibiotics:
-            # different for both resistant or susceptible
-
-    # Make new cells
-        # see kill cells
-
-    # Transfer plasmid
-        # depends on location from a resistant bacteria and chance should be low
-
-    # Mutate cells
-        # mutation rate for susceptible
-
-
-    # updates every half minute
+    # Amount of time incremented (in minutes) per iteration of simulation.
     update_time = 0.5
-    # actual time
+
+    # Simulation starts at time zero.
     actual_time = 0
-    # k constant
-    k = 0.5
-    carrying_capacity = 100000
-    kill_rate = 1000
-    generation_time = 30  # for mrsa
+
+    # TODO: switch reproduction/death rates to be stored at the individual cell level, so that we can have variation among cells
+    # Generation time in minutes
+    generation_time = 30
+    reproduction_probability_rate = math.log(2) / generation_time  # this is the k constant in the equation e^-kt
+    death_probability_rate = 0.05
+
+    def calculate_reproduction_probability_rates(self, colony):
+        # Function of time and other constants for determining current reproduction_probability_rates for each cell
+        # Multiplying this value by delta_t (update_time) gives probability of cell reproducing during current update
+        pass
+
+    def calculate_death_probability_rates(self, colony):
+        # Function of time and other constants for determining current death_probability_rates for each cell
+        # Multiplying this value by delta_t (update_time) gives probability of cell dying during current update
+        pass
+
+
+    # The following "individual methods" kill_cell, make_new_cell, transfer_plasmid, and mutate_cell operate on the individual cell
+    
+    # deletes an individual cell at the position i in the colony
+    def kill_cell(self, colony, i):
+        del colony.cells[i]
+    
+    # duplicates an individual cell at the position i, with the same features
+    def make_new_cell(self, colony, i):
+        old_cell = colony.cells[i]
+        new_cell = Cell(old_cell.resistant, old_cell.horizontal_transmission, old_cell.death_probability_rate, old_cell.reproduction_probability_rate)
+        colony.cells.insert(i, new_cell)
+
+    # gives a resistance "gene" from a resistant cell at position i in the list to a non-resistant cell at a position j
+    # this assumes that the cell at position i is resistant and j is not
+    def transfer_plasmid(self, colony, i, j):
+        # TODO: change this so that we are updating the cell in place rather than deleting and creating a new cell.
+        old_cell = colony.cells[j]
+        new_cell = Cell(colony[i].resistant, old_cell.horizontal_transmission, old_cell.death_probability_rate, old_cell.reproduction_probability_rate)
+        colony.cells.insert(j, new_cell)
+        del colony[j+1]
+    
+    # changes susceptible cell to resistant, assumes the cell is already susceptible
+    def mutate_cell(self, colony, i):
+        # TODO: change this so that we are updating the cell in place rather than deleting and creating a new cell.
+        old_cell = colony.cells[i]
+        new_cell = Cell(True, old_cell.horizontal_transmission, old_cell.death_probability_rate, old_cell.reproduction_probability_rate)
+        colony.cells.insert(i, new_cell)
+        del colony[i+1]
+
+    # Updates colony by stochastically selecting if each cell dies, reproduces, or just survives during this iteration.
     def updateColony(self,colony):
         self.actual_time += self.update_time
-        self.make_new_cells(self, P, colony)
-        self.kill_cells(self, P, colony)
+        self.calculate_death_probability_rates(colony)
+        self.calculate_reproduction_probability_rates(colony)
 
-
-        # for cell in colony:
-            #Kill cells
-            #Make new cells
-            #Transfer plasmid
-            #Mutate cells
-
-    def make_new_cells(self, P, colony):
-        k = math.log(2) / self.generation_time
-        deltaP = self.update_time * k * P
-        return deltaP
-    def kill_cells(self, P, colony):
-        k = 1 - P / self.carrying_capacity
-        return k
-
-
-
-x = ColonyUpdater()
-y = []
-for i in range(0, 1000):
-    y.append('A')
-
-
-z = 1000 + x.make_new_cells(1000, y)
-for i in range(0, 1000):
-    print(z)
-    z += x.make_new_cells(z, y) * x.kill_cells(z, y)
-
+        # Loops through each cell in the colony
+        i = 0
+        while i < len(colony.cells):
+            curr_cell = colony.cells[i]
+            x = random.random()
+            if (x < (self.death_probability_rate * self.update_time)):
+                # Cell dies
+                self.kill_cell(colony, i)
+            elif (x > 1 - (self.reproduction_probability_rate * self.update_time)):
+                # Cell reproduces
+                self.make_new_cell(colony, i)
+                i = i + 2
+            else:
+                # Cell survives
+                i = i + 1
+        return self.actual_time
