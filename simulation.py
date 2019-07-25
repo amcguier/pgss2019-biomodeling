@@ -16,6 +16,7 @@ def runSimulation():
         time = updater.updateColony(colony)
         analyzer.analyze_colony(colony, time)
     analyzer.print_data()
+    analyzer.plot_data()
     #TODO: store data from analyzer in file
 
 
