@@ -38,6 +38,7 @@ class ColonyAnalyzer:
         plt.legend(loc='upper left')
         plt.xlabel('Time')
         plt.ylabel('Number of Bacteria')
+        plt.show()
         
     def write_to_csv(self, data):
         with open('colony_analysis.csv', mode='a') as colony_analysis:
