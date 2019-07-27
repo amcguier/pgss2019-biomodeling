@@ -100,13 +100,13 @@ class ColonyUpdater:
                     self.transfer_plasmid(self, colony,self.resistant_index[i],self.resistant_index[i]-1) #run transfer left
 
             else:
-                if x == 53:
-                    if self.resistant_index[i]<= colony.cells:
+                if x == 3:
+                    if self.resistant_index[i]<= len(colony.cells)-2:
                         updateColony.transfer_plasmid(self, colony,self.resistant_index[i],self.resistant_index[i]+1) #run transfer right
 
     #Todo: add end behavior
         self.resistant_index = []
-    
+
 
     # Updates colony by stochastically selecting if each cell dies, reproduces, or just survives during this iteration.
     def updateColony(self,colony):
@@ -135,10 +135,8 @@ class ColonyUpdater:
                 #  mutate
                 if colony.cells[i].resistant == False and y < self.bacteria_mutation_rate:
                     self.mutate_cell(colony, i)
-                #  transfer plasmid
-                '''elif y < 1 - colony.cells[i].resistant == True and y > 1 - horizontal_gene_transfer_rate:
-                    self.transfer_plasmid(colony, i, i + 1)'''
 
                 i = i + 1
-
+        self.Horizontal_Gene_Transfer(colony)
+        
         return self.actual_time
