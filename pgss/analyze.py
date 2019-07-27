@@ -54,7 +54,7 @@ class ColonyAnalyzer:
         #for data in self.colony_data_over_time:
             #print(str(data[0]) + "\t" + str(data[1]) + "\t" + str(data[2]))
         # the following code is more intuitive given the new individual data arrays
-        for i in range(len(colony_data_over_time):
+        for i in range(len(self.colony_data_over_time)):
             print(str(self.time_data[i]) + "\t" + str(self.resistant[i]) + "\t" + str(self.nonresistant[i]))
 
     # for testing class

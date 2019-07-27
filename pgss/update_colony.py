@@ -90,7 +90,7 @@ class ColonyUpdater:
     def Horizontal_Gene_Transfer(self,colony):
         for i in range(0,len(colony.cells)):
             cell = colony.cells[i]
-            if cell.resistant = True:
+            if cell.resistant:
                 self.resistant_index.append(i)
 
         for i in range (0,len(self.resistant_index)):
