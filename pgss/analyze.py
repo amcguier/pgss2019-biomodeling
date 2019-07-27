@@ -3,24 +3,17 @@ from pgss.colony import Colony
 import csv
 import matplotlib.pyplot as plt
 
-# TODO:
-
 class ColonyAnalyzer:
-
-    ## no constructor necessary since the class creates its own data structures and writes them to a file
-    colony_data_over_time = []
-    time_data = []
-    resistant = []
-    nonresistant = []
     
     def __init__(self):
         self.colony_data_over_time = []
+        self.time_data = []
+        self.resistant = []
+        self.nonresistant = []
 
     def analyze_colony(self, colony, time):
         num_resistant = 0
         num_nonresistant = 0
-        #average_horizontal_transmission = 0
-        #average_cell_age = 0
 
         for cell in colony.cells:
             if cell.resistant:
@@ -28,20 +21,16 @@ class ColonyAnalyzer:
             else:
                 num_nonresistant += 1
                 
-        # average_cell_age += cell.cell_age
-            # cell_age has not been added to the Cell constructor
-        # average_cell_age /= Colony._colony_size
-            # It has not been determined whether cell_age will be included as a parameter in the model
-
+        # allows entire dataset to be appended to holistic data array in machine-friendly format
         self.colony_data_over_time.append([time, num_resistant, num_nonresistant])
-        
+        # appends data to individual data arrays; used for graphical representation of data
         self.time_data.append(time)
         self.resistant.append(num_resistant)
         self.nonresistant.append(num_nonresistant)
-        return self.colony_data_over_time
         
     def plot_data(self):
-        plt.plot(self.time_data, self.resistant)
+        # are these first two lines necessary? I'm not too familiar with matplotlib so please correct me if I'm wrong
+        plt.plot(self.time_data, self.resistant) 
         plt.plot(self.time_data, self.nonresistant)
         
         plt.plot(self.time_data, self.resistant, label='Resistant')
@@ -50,22 +39,27 @@ class ColonyAnalyzer:
         plt.xlabel('Time')
         plt.ylabel('Number of Bacteria')
         
-                
-
     def write_to_csv(self, data):
-        with open('colony_analysis.csv', mode = 'a') as colony_analysis:
-            file_writer = csv.writer(colony_analysis, delimiter = ", ", quotechar = '"', quoting = csv.QUOTE_MINIMAL)
-            file_writer.write(data)
-            file_writer.close()
-            # append entire dataset to file in one operation to reduce bottlenecks
+        with open('colony_analysis.csv', mode='a') as colony_analysis:
+            file_writer = csv.writer(colony_analysis, delimiter=', ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            #file_writer.writerow(self.colony_data_over_time)
+            file_writer.writerow(self.time_data)
+            file_writer.writerow(self.resistant)
+            file_writer.writerow(self.nonresistant)
+            # appends all data from one run in large chunks to reduce bottlenecking
 
+    # for quick visualization of data
     def print_data(self):
         print("Time\t# Res. \t# Nonres.")
-        for data in self.colony_data_over_time:
-            print(str(data[0]) + "\t" + str(data[1]) + "\t" + str(data[2]))
+        #for data in self.colony_data_over_time:
+            #print(str(data[0]) + "\t" + str(data[1]) + "\t" + str(data[2]))
+        # the following code is more intuitive given the new individual data arrays
+        for i in range(len(colony_data_over_time):
+            print(str(self.time_data[i]) + "\t" + str(self.resistant[i]) + "\t" + str(self.nonresistant[i]))
 
     # for testing class
-    def main(self):
-        self.write_to_csv(self, self.analyze_colony(self, Colony(), 0))
+    # redacted due to issues importing pgss module; probably involves file hierarchy
+    #def main(self):
+    #    self.write_to_csv(self, self.analyze_colony(self, Colony(), 0))
 
-    main()
+    #main()
