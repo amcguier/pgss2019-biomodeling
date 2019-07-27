@@ -4,22 +4,14 @@ from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
 iterations = 10
+size = 0
+bacteria_type = ''
+resistance = 0
+gene_transfer = ''
+reproduction = 0
+drug_survival = 0
 
-
-def runSimulation():
-    colony = Colony()
-    updater = ColonyUpdater()
-    analyzer = ColonyAnalyzer()
-
-    analyzer.analyze_colony(colony, 0)
-    for index in range(iterations):
-        time = updater.updateColony(colony)
-        analyzer.analyze_colony(colony, time)
-    analyzer.print_data()
-    analyzer.plot_data()
-    #TODO: store data from analyzer in file
-
-    def parse():
+def parse():
         file = open("inputFile.txt")
         
         for line in file.readlines():
@@ -46,7 +38,20 @@ def runSimulation():
                     if strippedline.startswith('Drug Survival Chance:'):
                         drug_survival = int(parts[1])
                         print(drug_survival)
-                
+
+def runSimulation():
+    colony = Colony(bacteria_type,size,resistance,gene_transfer, reproduction, drug_survival)
+    updater = ColonyUpdater()
+    analyzer = ColonyAnalyzer()
+
+    analyzer.analyze_colony(colony, 0)
+    for index in range(iterations):
+        time = updater.updateColony(colony)
+        analyzer.analyze_colony(colony, time)
+    analyzer.print_data()
+    analyzer.plot_data()
+    #TODO: store data from analyzer in file
+
         
     def runImport():
         bacteria_type = input("What type of bacteria is being modeled?")
