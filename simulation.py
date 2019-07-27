@@ -19,7 +19,35 @@ def runSimulation():
     analyzer.plot_data()
     #TODO: store data from analyzer in file
 
-
+    def parse():
+        file = open("inputFile.txt")
+        
+        for line in file.readlines():
+            strippedline=line.strip()
+            if strippedline != "":
+                #this section runs through every line, assessed which info is provided per line,
+                #and assigns it to the appropriate variables. Then, all the info is printed
+                    parts = strippedline.split(":")
+                    if strippedline.startswith('Bacteria Type:'):
+                        bacteria_type = parts[1]
+                        print(bacteria_type)
+                    if strippedline.startswith('Colony Size:'):
+                        size = int(parts[1])
+                        print(size)
+                    if strippedline.startswith('Chance of Resistance:'):
+                        resistance = int(parts[1])
+                        print(resistance)
+                    if strippedline.startswith('Does Horizontal Transfer Occur?:'):
+                        gene_transfer = parts[1]
+                        print(gene_transfer)
+                    if strippedline.startswith('Reproduction Time:'):
+                        reproduction = int(parts[1])
+                        print(reproduction)
+                    if strippedline.startswith('Drug Survival Chance:'):
+                        drug_survival = int(parts[1])
+                        print(drug_survival)
+                
+        
     def runImport():
         bacteria_type = input("What type of bacteria is being modeled?")
         print(bacteria_type)
