@@ -40,9 +40,9 @@ class ColonyAnalyzer:
         plt.ylabel('Number of Bacteria')
         plt.show()
         
-    def write_to_csv(self, data):
+    def write_to_csv(self):
         with open('colony_analysis.csv', mode='a') as colony_analysis:
-            file_writer = csv.writer(colony_analysis, delimiter=', ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            file_writer = csv.writer(colony_analysis, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             #file_writer.writerow(self.colony_data_over_time)
             file_writer.writerow(self.time_data)
             file_writer.writerow(self.resistant)

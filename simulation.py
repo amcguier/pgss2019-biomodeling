@@ -50,7 +50,7 @@ def runSimulation():
         analyzer.analyze_colony(colony, time)
     analyzer.print_data()
     analyzer.plot_data()
-    #TODO: store data from analyzer in file
+    analyzer.write_to_csv()
 
         
     def runImport():
