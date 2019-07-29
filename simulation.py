@@ -8,9 +8,9 @@ from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
 iterations = 100
-size = 0
+size = 500
 bacteria_type = ''
-resistance = 0
+resistance = 1000
 gene_transfer = True
 reproduction = 0
 drug_survival = 0
