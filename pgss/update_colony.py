@@ -90,19 +90,19 @@ class ColonyUpdater:
     def Horizontal_Gene_Transfer(self,colony):
         for i in range(0,len(colony.cells)):
             cell = colony.cells[i]
-            if cell.resistant = True:
+            if cell.resistant:
                 self.resistant_index.append(i)
 
         for i in range (0,len(self.resistant_index)):
             x = random.randint(0,self.hgt_probability)
             if x == 2:
                 if self.resistant_index[i] > 0:
-                    self.transfer_plasmid(self, colony,self.resistant_index[i],self.resistant_index[i]-1) #run transfer left
+                    self.transfer_plasmid(colony,self.resistant_index[i],self.resistant_index[i]-1) #run transfer left
 
             else:
                 if x == 3:
                     if self.resistant_index[i]<= len(colony.cells)-2:
-                        updateColony.transfer_plasmid(self, colony,self.resistant_index[i],self.resistant_index[i]+1) #run transfer right
+                        self.transfer_plasmid(colony,self.resistant_index[i],self.resistant_index[i]+1) #run transfer right
 
     #Todo: add end behavior
         self.resistant_index = []

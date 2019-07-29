@@ -12,6 +12,13 @@ from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
 iterations = 10
+size = 0
+bacteria_type = ''
+resistance = 0
+gene_transfer = True
+reproduction = 0
+drug_survival = 0
+_num_initial_resistant = 0
 
 
 def runSimulation():
@@ -28,7 +35,8 @@ def runSimulation():
     # file name should be passed as a command line argument
     analyzer.write_to_csv(sys.argv[1])
 
-    def parse():
+
+def parse():
         file = open("inputFile.txt")
         
         for line in file.readlines():
@@ -39,23 +47,36 @@ def runSimulation():
                     parts = strippedline.split(":")
                     if strippedline.startswith('Bacteria Type:'):
                         bacteria_type = parts[1]
-                        print(bacteria_type)
+            
                     if strippedline.startswith('Colony Size:'):
                         size = int(parts[1])
-                        print(size)
                     if strippedline.startswith('Chance of Resistance:'):
                         resistance = int(parts[1])
-                        print(resistance)
                     if strippedline.startswith('Does Horizontal Transfer Occur?:'):
-                        gene_transfer = parts[1]
-                        print(gene_transfer)
+                        if parts[1] == 'True':
+                            gene_transfer = True
+                        else:
+                            gene_transfer = False
                     if strippedline.startswith('Reproduction Time:'):
                         reproduction = int(parts[1])
-                        print(reproduction)
                     if strippedline.startswith('Drug Survival Chance:'):
                         drug_survival = int(parts[1])
-                        print(drug_survival)
-                
+                    if strippedline.startswith('Number Resistant:'):
+                        _num_initial_resistant = int(parts[1])
+
+def runSimulation():
+    colony = Colony(bacteria_type,size,resistance,gene_transfer, reproduction, drug_survival, )
+    updater = ColonyUpdater()
+    analyzer = ColonyAnalyzer()
+
+    analyzer.analyze_colony(colony, 0)
+    for index in range(iterations):
+        time = updater.updateColony(colony)
+        analyzer.analyze_colony(colony, time)
+    analyzer.print_data()
+    analyzer.plot_data()
+    analyzer.write_to_csv()
+
         
     def runImport():
         bacteria_type = input("What type of bacteria is being modeled?")
@@ -82,5 +103,6 @@ def runSimulation():
 
 if __name__ == '__main__':
     #runImport()
+    parse()
     runSimulation()
 
