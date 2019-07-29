@@ -1,0 +1,2 @@
+Bacteria Type,Colony Size,Chance of Resistance,Does Horizontal Tranfer Occur,Reproduction Time,Drug Survival Chance,Number Initially Resistant
+TB,1000,100,YES,900,100,10
