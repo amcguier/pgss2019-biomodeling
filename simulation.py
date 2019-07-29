@@ -17,6 +17,7 @@ drug_survival = 0
 _num_initial_resistant = 0
 
 import csv
+import sys
 
 
 def parse():
