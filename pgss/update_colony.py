@@ -14,7 +14,7 @@ class ColonyUpdater:
     actual_time = 0
 
     #  The first antibiotic is introduced if true and is not introduced if false
-    antibiotic1 = False
+    antibiotic1 = True
     #  chance of mutation
     bacteria_mutation_rate = 0.0001
     horizontal_gene_transfer_rate = 0.01
