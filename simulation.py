@@ -1,10 +1,6 @@
-#import sys
-# path may be subject to changed based on user's device
-# directly modifying PYTHONPATH from command line/environmental variables dialog is probably better
-    #set PYTHONPATH=%PYTHONPATH%;W:\Documents\GitHub\pgss2019-biomodeling\pgss
-    #C:\Python27\ArcGIS10.6\python.exe W:\Documents\GitHub\pgss2019.biomodeling\simulation.py
-#if 'W:\\Documents\\GitHub\\pgss2019-biomodeling\\pgss' not in sys.path:
-    #sys.path.append('W:\\Documents\\GitHub\\pgss2019-biomodeling\\pgss')
+# If an ImportError occurs, make sure Path variable includes the locations of the Python installation and Python scripts
+# e.g. "C:\Users\xxx\Python37\" and "C:\Users\xxx\Python37\Scripts\"
+# If this fails, reinstall Python using a custom installation and make sure to select "Add Python to environment variables"
 
 from pgss.colony import Colony
 from pgss.analyze import ColonyAnalyzer
@@ -20,20 +16,6 @@ reproduction = 0
 drug_survival = 0
 _num_initial_resistant = 0
 
-
-def runSimulation():
-    colony = Colony()
-    updater = ColonyUpdater()
-    analyzer = ColonyAnalyzer()
-
-    analyzer.analyze_colony(colony, 0)
-    for index in range(iterations):
-        time = updater.updateColony(colony)
-        analyzer.analyze_colony(colony, time)
-    analyzer.print_data()
-    analyzer.plot_data()
-    # file name should be passed as a command line argument
-    analyzer.write_to_csv(sys.argv[1])
 
 
 def parse():
@@ -65,7 +47,7 @@ def parse():
                         _num_initial_resistant = int(parts[1])
 
 def runSimulation():
-    colony = Colony(bacteria_type,size,resistance,gene_transfer, reproduction, drug_survival, )
+    colony = Colony(bacteria_type,size,resistance,gene_transfer, reproduction, drug_survival, _num_initial_resistant)
     updater = ColonyUpdater()
     analyzer = ColonyAnalyzer()
 
@@ -75,7 +57,7 @@ def runSimulation():
         analyzer.analyze_colony(colony, time)
     analyzer.print_data()
     analyzer.plot_data()
-    analyzer.write_to_csv()
+    analyzer.write_to_csv(sys.argv[1])
 
         
     def runImport():
@@ -103,6 +85,6 @@ def runSimulation():
 
 if __name__ == '__main__':
     #runImport()
-    parse()
+    #parse()
     runSimulation()
 
