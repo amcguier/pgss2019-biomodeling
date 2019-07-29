@@ -1,3 +1,11 @@
+#import sys
+# path may be subject to changed based on user's device
+# directly modifying PYTHONPATH from command line/environmental variables dialog is probably better
+    #set PYTHONPATH=%PYTHONPATH%;W:\Documents\GitHub\pgss2019-biomodeling\pgss
+    #C:\Python27\ArcGIS10.6\python.exe W:\Documents\GitHub\pgss2019.biomodeling\simulation.py
+#if 'W:\\Documents\\GitHub\\pgss2019-biomodeling\\pgss' not in sys.path:
+    #sys.path.append('W:\\Documents\\GitHub\\pgss2019-biomodeling\\pgss')
+
 from pgss.colony import Colony
 from pgss.analyze import ColonyAnalyzer
 from pgss.cell import Cell
@@ -12,8 +20,8 @@ reproduction = 0
 drug_survival = 0
 _num_initial_resistant = 0
 
-import csv
 
+import csv
 
 
 def parse():
@@ -91,7 +99,7 @@ def runSimulation():
         print(index)
     analyzer.print_data()
     analyzer.plot_data()
-    analyzer.write_to_csv()
+    analyzer.write_to_csv(sys.argv[1])
 
 
 

@@ -29,20 +29,17 @@ class ColonyAnalyzer:
         self.nonresistant.append(num_nonresistant)
         
     def plot_data(self):
-        # are these first two lines necessary? I'm not too familiar with matplotlib so please correct me if I'm wrong
-        plt.plot(self.time_data, self.resistant) 
-        plt.plot(self.time_data, self.nonresistant)
-        
         plt.plot(self.time_data, self.resistant, label='Resistant')
         plt.plot(self.time_data, self.nonresistant, label='Nonresistant')
         plt.legend(loc='upper left')
         plt.xlabel('Time')
         plt.ylabel('Number of Bacteria')
         plt.show()
-        
-    def write_to_csv(self):
-        with open('colony_analysis.csv', mode='a') as colony_analysis:
-            file_writer = csv.writer(colony_analysis, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+    # file name can be passed in with command line arguments  
+    def write_to_csv(self, file_name):
+        with open(file_name, mode='a') as file:
+            file_writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             #file_writer.writerow(self.colony_data_over_time)
             file_writer.writerow(self.time_data)
             file_writer.writerow(self.resistant)
