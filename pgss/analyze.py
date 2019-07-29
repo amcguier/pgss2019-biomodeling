@@ -29,19 +29,17 @@ class ColonyAnalyzer:
         self.nonresistant.append(num_nonresistant)
         
     def plot_data(self):
-        # are these first two lines necessary? I'm not too familiar with matplotlib so please correct me if I'm wrong
-        plt.plot(self.time_data, self.resistant) 
-        plt.plot(self.time_data, self.nonresistant)
-        
         plt.plot(self.time_data, self.resistant, label='Resistant')
         plt.plot(self.time_data, self.nonresistant, label='Nonresistant')
         plt.legend(loc='upper left')
         plt.xlabel('Time')
         plt.ylabel('Number of Bacteria')
-        
-    def write_to_csv(self, data):
-        with open('colony_analysis.csv', mode='a') as colony_analysis:
-            file_writer = csv.writer(colony_analysis, delimiter=', ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        plt.show()
+
+    # file name can be passed in with command line arguments  
+    def write_to_csv(self, file_name):
+        with open(file_name, mode='a') as file:
+            file_writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             #file_writer.writerow(self.colony_data_over_time)
             file_writer.writerow(self.time_data)
             file_writer.writerow(self.resistant)
@@ -54,7 +52,7 @@ class ColonyAnalyzer:
         #for data in self.colony_data_over_time:
             #print(str(data[0]) + "\t" + str(data[1]) + "\t" + str(data[2]))
         # the following code is more intuitive given the new individual data arrays
-        for i in range(len(colony_data_over_time):
+        for i in range(len(self.colony_data_over_time)):
             print(str(self.time_data[i]) + "\t" + str(self.resistant[i]) + "\t" + str(self.nonresistant[i]))
 
     # for testing class
