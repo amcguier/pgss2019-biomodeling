@@ -7,9 +7,10 @@ iterations = 10
 size = 0
 bacteria_type = ''
 resistance = 0
-gene_transfer = ''
+gene_transfer = True
 reproduction = 0
 drug_survival = 0
+_num_initial_resistant = 0
 
 def parse():
         file = open("inputFile.txt")
@@ -22,25 +23,25 @@ def parse():
                     parts = strippedline.split(":")
                     if strippedline.startswith('Bacteria Type:'):
                         bacteria_type = parts[1]
-                        print(bacteria_type)
+            
                     if strippedline.startswith('Colony Size:'):
                         size = int(parts[1])
-                        print(size)
                     if strippedline.startswith('Chance of Resistance:'):
                         resistance = int(parts[1])
-                        print(resistance)
                     if strippedline.startswith('Does Horizontal Transfer Occur?:'):
-                        gene_transfer = parts[1]
-                        print(gene_transfer)
+                        if parts[1] == 'True':
+                            gene_transfer = True
+                        else:
+                            gene_transfer = False
                     if strippedline.startswith('Reproduction Time:'):
                         reproduction = int(parts[1])
-                        print(reproduction)
                     if strippedline.startswith('Drug Survival Chance:'):
                         drug_survival = int(parts[1])
-                        print(drug_survival)
+                    if strippedline.startswith('Number Resistant:'):
+                        _num_initial_resistant = int(parts[1])
 
 def runSimulation():
-    colony = Colony(bacteria_type,size,resistance,gene_transfer, reproduction, drug_survival)
+    colony = Colony(bacteria_type,size,resistance,gene_transfer, reproduction, drug_survival, )
     updater = ColonyUpdater()
     analyzer = ColonyAnalyzer()
 
@@ -78,5 +79,6 @@ def runSimulation():
 
 if __name__ == '__main__':
     #runImport()
+    parse()
     runSimulation()
 
