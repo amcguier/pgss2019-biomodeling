@@ -16,7 +16,7 @@ class ColonyUpdater:
     #  The first antibiotic is introduced if true and is not introduced if false
     #  nonresistant growth rate starts decreasing after -1.5; resistant growth rate after 1
     #  In log scale (so -1 corresponds to 1/10 of a ug/mL of tetracycline
-    tetracycline = -2.2
+    tetracycline = 2
     #  chance of mutation
     bacteria_mutation_rate = 0.0001
 
@@ -55,28 +55,41 @@ class ColonyUpdater:
             return factor * self.calculate_reproduction_probability_rate(colony)
         else:
             return 0
-        # rgr = relative growth rate
-        #rgr = -0.672 * concentration + 0.0739
-        #rgr=1
-        #rate = rgr * self.calculate_reproduction_probability_rate(colony)
-        #if (rate < 1):
-         #   return rate
-        #else:
-         #   return self.calculate_reproduction_probability_rate(colony)
 
-    def calculate_resistant_death_probability_rate(self, colony):
+    def calculate_death_probability_rate(self, colony):
         # Function of time and other constants for determining current death_probability_rates for each resistant cell
         # Multiplying this value by delta_t (update_time) gives probability of cell dying during current up
         return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)) )
 
-    def calculate_nonresistant_death_probability_rate(self, colony):
+    def calculate_resistant_death_probability_rate(self, colony, concentration):
         # Function of time and other constants for determining current death_probability_rates for each resistant cell
         # Multiplying this value by delta_t (update_time) gives probability of cell dying during current up
+        # return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)) )
+        factor = -0.556 * concentration + 1.56
+        if factor > 1:
+            return self.calculate_death_probability_rate(colony)
+        elif factor > 0:
+            return factor * self.calculate_death_probability_rate(colony)
+        else:
+            return 0
+
+    def calculate_nonresistant_death_probability_rate(self, colony, concentration):
+        # Function of time and other constants for determining current death_probability_rates for each resistant cell
+        # Multiplying this value by delta_t (update_time) gives probability of cell dying during current up
+        factor = -0.672 * concentration + 0.0739
+        if factor > 1:
+            return self.calculate_death_probability_rate(colony)
+        elif factor > 0:
+            return factor * self.calculate_death_probability_rate(colony)
+        else:
+            return 0
+
+        '''
         if self.tetracycline > -2:  #  if there is sufficient amount of tetracycline to make a difference
             return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)) ) #* 2  #  100 times more likely to die in antibiotic environment
         else:
             return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)))
-
+        '''
 
 
 
@@ -138,8 +151,8 @@ class ColonyUpdater:
     # Updates colony by stochastically selecting if each cell dies, reproduces, or just survives during this iteration.
     def updateColony(self,colony):
         self.actual_time += self.update_time
-        resistant_dpr = self.calculate_resistant_death_probability_rate(colony)
-        nonresistant_dpr = self.calculate_nonresistant_death_probability_rate(colony)
+        resistant_dpr = self.calculate_resistant_death_probability_rate(colony, self.tetracycline)
+        nonresistant_dpr = self.calculate_nonresistant_death_probability_rate(colony, self.tetracycline)
         resistant_rpr = self.calculate_reproduction_probability_rate_tetracycline_resistant(colony, self.tetracycline)
         nonresistant_rpr = self.calculate_reproduction_probability_rate_tetracycline_nonresistant(colony, self.tetracycline)
 
