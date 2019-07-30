@@ -1,6 +1,6 @@
 class Cell:
 
-    def __init__(self, resistant, horizontal_transmission, death_probability_rate, reproduction_probability_rate):
+    def __init__(self, resistant, death_probability_rate, reproduction_probability_rate):
         # Initialize cell here
         self.resistant = resistant
         self.death_probability_rate = death_probability_rate
