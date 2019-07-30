@@ -18,7 +18,11 @@ class ColonyUpdater:
     actual_time = 0
     #  nonresistant growth rate starts decreasing after -1.5; resistant growth rate after 1
     #  In log scale (so -1 corresponds to 1/10 of a ug/mL of tetracycline
+    
+    
     tetracycline = -5
+    
+    
     #  chance of mutation
     bacteria_mutation_rate = 0.0001
     #  these are the horizontal asymtotes, the death and reproduction rates should approach 0.5 as time goes to infinity
@@ -77,7 +81,13 @@ class ColonyUpdater:
     def calculate_dp_tetracycline_nonresistant(self, steepness, concentration):
         return self.calculate_death_probability(steepness)
 
-
+    def turnonantibiotics(self):
+        self.tetracycline = random.randint(-2, 2)
+       
+    def tetracyclineconcentration(self):    
+        print('This is the concentration')
+        print(self.tetracycline)
+        
 
     # The following "individual methods" kill_cell, make_new_cell, transfer_plasmid, and mutate_cell operate on the individual cell
     # deletes an individual cell at the position i in the colonypass

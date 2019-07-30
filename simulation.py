@@ -7,7 +7,7 @@ from pgss.analyze import ColonyAnalyzer
 from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
-iterations = 200
+iterations = 100
 size = 200
 bacteria_type = ''
 resistance = 20
@@ -17,7 +17,7 @@ drug_survival = 0
 _num_initial_resistant =0
 
 import csv
-import sys
+#import sys
 
 
 def parse():
@@ -94,13 +94,19 @@ def runSimulation():
         time = updater.updateColony(colony)
         analyzer.analyze_colony(colony, time)
         print(index)
+        if index == iterations/5:
+            updater.turnonantibiotics()
+            
+
+        
     updater.antibioticDeath(colony)
     analyzer.print_data()
     analyzer.plot_data()
     analyzer.bar_graph()
     analyzer.bar_graph_2()
-    analyzer.write_to_csv(sys.argv[1])
+    #analyzer.write_to_csv(sys.argv[1])
     updater.plot_probability_rates()
+    updater.tetracyclineconcentration()
 
 if __name__ == '__main__':
     #runImport()
