@@ -8,13 +8,13 @@ from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
 iterations = 100
-size = 500
+size = 1000
 bacteria_type = ''
 resistance = 1000
 gene_transfer = True
 reproduction = 0
 drug_survival = 0
-_num_initial_resistant = 0
+_num_initial_resistant = 200
 
 import csv
 import sys
