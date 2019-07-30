@@ -8,13 +8,13 @@ from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
 iterations = 100
-size = 1000
+size = 200
 bacteria_type = ''
-resistance = 1000
+resistance = 100
 gene_transfer = True
 reproduction = 0
 drug_survival = 0
-_num_initial_resistant = 200
+_num_initial_resistant = 0
 
 import csv
 import sys
@@ -84,6 +84,7 @@ def parse():
                      #   _num_initial_resistant = int(parts[1])
 
 def runSimulation():
+    global bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant
     colony = Colony(bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant)
     updater = ColonyUpdater()
     analyzer = ColonyAnalyzer()
@@ -96,6 +97,7 @@ def runSimulation():
     analyzer.print_data()
     analyzer.plot_data()
     analyzer.write_to_csv(sys.argv[1])
+    updater.plot_probability_rates()
 
 if __name__ == '__main__':
     #runImport()

@@ -1,6 +1,9 @@
 import math
 import cmath
 import random
+import matplotlib.pyplot as plt
+import numpy as np
+
 from pgss.colony import Colony
 from pgss.cell import Cell
 
@@ -24,7 +27,8 @@ class ColonyUpdater:
     #  these are the steepness variables that determines the steepness of the logistic curve
     k_reproduction = 0.3
     k_death = 0.2
-    #  these are the response times for something to happen
+
+    #  this is the timepoint of the inflection point of the logistic curve
     t_reproduction = 10
     t_death = 20
     # these variables deal with function antibioticDeath
@@ -36,10 +40,18 @@ class ColonyUpdater:
     hillCoef = 1
 
     ##  calculates a generic probability of reproduction from a variable "steepness" that determines the steepness of the logistic curve
+
+    time_data = []
+    resistant_reproduction_probabilities = []
+    resistant_death_probabilities = []
+    nonresistant_reproduction_probabilities = []
+    nonresistant_death_probabilities = []
+
+    #  calculates a generic probability of reproduction from a variable "steepness" that determines the steepness of the logistic curve
     def calculate_reproduction_probability(self, steepness):
         return self.update_time * self.p_reproduction / (1 + math.exp(steepness * (self.t_reproduction - self.actual_time)))
 
-    #  same as calculate_reproduction_probability_rate, except for death
+    #  same as calculate_reproduction_probability, except for death
     def calculate_death_probability(self, steepness):
         return self.update_time * self.p_death / (1 + math.exp(steepness * (self.t_death - self.actual_time)))
 
@@ -62,6 +74,7 @@ class ColonyUpdater:
         #  x is our new reproduction rate
         x = self.k_death + (self.k_reproduction - self.k_death) * factor
         return self.calculate_reproduction_probability(x)
+
     def calculate_dp_tetracycline_resistant(self, steepness, concentration):
         return self.calculate_death_probability(steepness)
     def calculate_dp_tetracycline_nonresistant(self, steepness, concentration):
@@ -165,22 +178,30 @@ class ColonyUpdater:
     # Updates colony by stochastically selecting if each cell dies, reproduces, or just survives during this iteration.
     def updateColony(self,colony):
         self.actual_time += self.update_time
-        resistant_dpr = self.calculate_dp_tetracycline_resistant(self.k_death, self.tetracycline)
-        nonresistant_dpr = self.calculate_dp_tetracycline_nonresistant(self.k_death, self.tetracycline)
-        resistant_rpr = self.calculate_rp_tetracycline_resistant( self.calculate_rp_tetracycline_resistant(self.k_reproduction, self.tetracycline), self.tetracycline)
-        nonresistant_rpr = self.calculate_rp_tetracycline_nonresistant( self.calculate_rp_tetracycline_nonresistant(self.k_reproduction, self.tetracycline), self.tetracycline)
-
+        '''
+        resistant_dp = self.calculate_dp_tetracycline_resistant(self.k_death, self.tetracycline)
+        nonresistant_dp = self.calculate_dp_tetracycline_nonresistant(self.k_death, self.tetracycline)
+        resistant_rp = self.calculate_rp_tetracycline_resistant(self.k_reproduction, self.tetracycline)
+        nonresistant_rp = self.calculate_rp_tetracycline_nonresistant(self.k_reproduction, self.tetracycline)
+        '''
+        resistant_dp = self.calculate_death_probability(self.k_death)
+        nonresistant_dp = self.calculate_death_probability(self.k_death)
+        resistant_rp = self.calculate_reproduction_probability(self.k_reproduction)
+        nonresistant_rp = self.calculate_reproduction_probability(self.k_reproduction)
+        
+        
         # Loops through each cell in the colony
         i = 0
         while i < len(colony.cells):
             x = random.random()
+
             cell = colony.cells[i]
             #  check if the cell should be killed
-            if (cell.resistant and x < resistant_dpr) or (not cell.resistant and x < nonresistant_dpr):
+            if (cell.resistant and x < resistant_dp) or (not cell.resistant and x < nonresistant_dp):
                 self.kill_cell(colony, i)
                 self.naturalDeathRate += 1
             #  check if the cell should reproduce
-            elif (cell.resistant and x > 1 - resistant_rpr) or (not cell.resistant and x > 1 - nonresistant_rpr):
+            elif (cell.resistant and x > 1 - resistant_rp) or (not cell.resistant and x > 1 - nonresistant_rp):
                 # Cell reproduces
                 self.naturalGrowthRate += 1
                 self.make_new_cell(colony, i)
@@ -194,7 +215,14 @@ class ColonyUpdater:
                 if not cell.resistant and y < self.bacteria_mutation_rate:
                     self.mutate_cell(colony, i)
                 i = i + 1
+
         self.Horizontal_Gene_Transfer(colony)
+      
+        self.time_data.append(self.actual_time)
+        self.resistant_reproduction_probabilities.append(resistant_rp)
+        self.nonresistant_reproduction_probabilities.append(nonresistant_rp)
+        self.resistant_death_probabilities.append(resistant_dp)
+        self.nonresistant_death_probabilities.append(nonresistant_dp)
 
         return self.actual_time
     
@@ -216,3 +244,11 @@ class ColonyUpdater:
         print(deathRate)
     
         return deathRate
+
+    def plot_probability_rates(self):
+        plt.plot(self.time_data, self.resistant_reproduction_probabilities, label='Resistant Reproduction Prob.')
+        plt.plot(self.time_data, self.nonresistant_reproduction_probabilities, label='Nonresistant Reproduction Prob.')
+        plt.plot(self.time_data, self.resistant_death_probabilities, label='Resistant Death Prob.')
+        plt.plot(self.time_data, self.nonresistant_death_probabilities, label='Nonresistant Death Prob.')
+        plt.legend(loc='upper left')
+        plt.show()

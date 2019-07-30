@@ -8,6 +8,8 @@ class Colony:
 
     def __init__(self, bacteria_type, colony_size, chance_resistant, reproduction_time, drug_survival_chance, _num_initial_resistant):
         self._colony_size = colony_size
+        self._initial_resistance_chance = chance_resistant
+        self._num_initial_resistant = _num_initial_resistant
         self.cells = []
 
         # Create _num_initial_resistant cells with forced resistance
