@@ -1,4 +1,4 @@
-2from pgss.cell import Cell
+from pgss.cell import Cell
 from pgss.colony import Colony
 import csv
 import numpy as np
