@@ -6,6 +6,7 @@ from pgss.colony import Colony
 from pgss.analyze import ColonyAnalyzer
 from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
+import random
 
 iterations = 100
 size = 200
@@ -15,6 +16,8 @@ gene_transfer = True
 reproduction = 0
 drug_survival = 0
 _num_initial_resistant =0
+addingantibiotics = True
+
 
 import csv
 #import sys
@@ -90,15 +93,15 @@ def runSimulation():
     analyzer = ColonyAnalyzer()
 
     analyzer.analyze_colony(colony, 0)
+    placement = random.randint(2,5)
     for index in range(iterations):
         time = updater.updateColony(colony)
         analyzer.analyze_colony(colony, time)
         print(index)
-        if index == iterations/5:
+        if addingantibiotics and index == int(iterations/placement):
             updater.turnonantibiotics()
             
 
-        
     updater.antibioticDeath(colony)
     analyzer.print_data()
     analyzer.plot_data()
@@ -107,6 +110,10 @@ def runSimulation():
     #analyzer.write_to_csv(sys.argv[1])
     updater.plot_probability_rates()
     updater.tetracyclineconcentration()
+    print(' ')
+    print('Antibiotic Placement')
+    print('At the first inverse interval of...')
+    print(placement)
 
 if __name__ == '__main__':
     #runImport()

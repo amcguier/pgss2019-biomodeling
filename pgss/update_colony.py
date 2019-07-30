@@ -85,7 +85,7 @@ class ColonyUpdater:
         self.tetracycline = random.randint(-2, 2)
        
     def tetracyclineconcentration(self):    
-        print('This is the concentration')
+        print('Tetracycline Concentration:')
         print(self.tetracycline)
         
 
