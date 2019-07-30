@@ -84,6 +84,7 @@ def parse():
                      #   _num_initial_resistant = int(parts[1])
 
 def runSimulation():
+    global bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant
     colony = Colony(bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant)
     updater = ColonyUpdater()
     analyzer = ColonyAnalyzer()
