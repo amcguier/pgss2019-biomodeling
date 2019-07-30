@@ -7,14 +7,14 @@ from pgss.analyze import ColonyAnalyzer
 from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 
-iterations = 100
+iterations = 200
 size = 200
 bacteria_type = ''
-resistance = 100
+resistance = 20
 gene_transfer = True
 reproduction = 0
 drug_survival = 0
-_num_initial_resistant = 0
+_num_initial_resistant =0
 
 import csv
 import sys
