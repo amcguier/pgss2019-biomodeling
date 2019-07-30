@@ -94,6 +94,7 @@ def runSimulation():
         time = updater.updateColony(colony)
         analyzer.analyze_colony(colony, time)
         print(index)
+    updater.antibioticDeath(colony)
     analyzer.print_data()
     analyzer.plot_data()
     analyzer.write_to_csv(sys.argv[1])

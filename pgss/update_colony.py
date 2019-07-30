@@ -81,7 +81,7 @@ class ColonyUpdater:
         return self.calculate_death_probability(steepness)
 
 
-'''
+    '''
     def calculate_reproduction_probability_rate(self, colony, steepness):
         # Function of time and other constants for determining current reproduction_probability_rates for each cell
         # Multiplying this value by delta_t (update_time) gives probability of cell reproducing during current update
@@ -116,7 +116,7 @@ class ColonyUpdater:
             return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)) ) #* 2  #  100 times more likely to die in antibiotic environment
         else:
             return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)))
-'''
+    '''
 
 
 
@@ -238,9 +238,9 @@ class ColonyUpdater:
                 
         #the hill equation estimates antibiotic deaths
         bob = self.naturalGrowthRate - self.naturalDeathRate
-        jeff = math.exp(self.tetracycline,self.hillCoef)
-        deathRate = (bob - self.minGrowthRate)*(jeff/(jeff + ((-1 * self.minGrowthRate/bob)*math.exp(self.minInhibConcentration,self.hillCoef))))
-        
+        jeff = math.pow(self.tetracycline,self.hillCoef)
+        deathRate = (bob - self.minGrowthRate)*(jeff/(jeff + ((-1 * self.minGrowthRate/bob)*math.pow(self.minInhibConcentration,self.hillCoef))))
+        print("This is the death rate:")
         print(deathRate)
     
         return deathRate
