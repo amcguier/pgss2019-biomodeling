@@ -4,6 +4,7 @@ import random
 from pgss.colony import Colony
 from pgss.cell import Cell
 
+
 class ColonyUpdater:
     hgt_probability = 1000 #Probability of hgt
     resistant_index = []
@@ -26,8 +27,15 @@ class ColonyUpdater:
     #  these are the response times for something to happen
     t_reproduction = 10
     t_death = 20
+    # these variables deal with function antibioticDeath
+    cellCounter = 0
+    naturalGrowthRate = 0
+    naturalDeathRate = 0
+    minGrowthRate = 0
+    minInhibConcentration = 0.5
+    hillCoef = 1
 
-    #  calculates a generic probability of reproduction from a variable "steepness" that determines the steepness of the logistic curve
+    ##  calculates a generic probability of reproduction from a variable "steepness" that determines the steepness of the logistic curve
     def calculate_reproduction_probability(self, steepness):
         return self.update_time * self.p_reproduction / (1 + math.exp(steepness * (self.t_reproduction - self.actual_time)))
 
@@ -60,7 +68,8 @@ class ColonyUpdater:
         return self.calculate_death_probability(steepness)
 
 
-    '''def calculate_reproduction_probability_rate(self, colony, steepness):
+'''
+    def calculate_reproduction_probability_rate(self, colony, steepness):
         # Function of time and other constants for determining current reproduction_probability_rates for each cell
         # Multiplying this value by delta_t (update_time) gives probability of cell reproducing during current update
         return self.update_time * self.p_d / (1 + math.exp(steepness * (self.t_d - self.actual_time)))
@@ -89,13 +98,12 @@ class ColonyUpdater:
         # Function of time and other constants for determining current death_probability_rates for each resistant cell
         # Multiplying this value by delta_t (update_time) gives probability of cell dying during current up
         return self.calculate_death_probability_rate(colony, steepness)
-    '''
-    '''
+    
         if self.tetracycline > -2:  #  if there is sufficient amount of tetracycline to make a difference
             return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)) ) #* 2  #  100 times more likely to die in antibiotic environment
         else:
             return self.update_time * self.p_m / (1 + math.exp(self.k_m * (self.t_m - self.actual_time)))
-    '''
+'''
 
 
 
@@ -170,9 +178,11 @@ class ColonyUpdater:
             #  check if the cell should be killed
             if (cell.resistant and x < resistant_dpr) or (not cell.resistant and x < nonresistant_dpr):
                 self.kill_cell(colony, i)
+                self.naturalDeathRate += 1
             #  check if the cell should reproduce
             elif (cell.resistant and x > 1 - resistant_rpr) or (not cell.resistant and x > 1 - nonresistant_rpr):
                 # Cell reproduces
+                self.naturalGrowthRate += 1
                 self.make_new_cell(colony, i)
                 i = i + 2
             else:
@@ -187,3 +197,22 @@ class ColonyUpdater:
         self.Horizontal_Gene_Transfer(colony)
 
         return self.actual_time
+    
+    
+    
+    #this function will deal with the hill equation as it relates to natural growth and death
+    def antibioticDeath(self, colony):
+    #run through each position in colony.cells, check for resistance. if non-resistance, add one to the counter
+        for i in range(0,len(colony.cells)):
+            cell = colony.cells[i]
+            if not cell.resistant:
+                self.cellCounter += 1
+                
+        #the hill equation estimates antibiotic deaths
+        bob = self.naturalGrowthRate - self.naturalDeathRate
+        jeff = math.exp(self.tetracycline,self.hillCoef)
+        deathRate = (bob - self.minGrowthRate)*(jeff/(jeff + ((-1 * self.minGrowthRate/bob)*math.exp(self.minInhibConcentration,self.hillCoef))))
+        
+        print(deathRate)
+    
+        return deathRate
