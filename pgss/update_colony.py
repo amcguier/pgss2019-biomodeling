@@ -108,7 +108,7 @@ class ColonyUpdater:
     # duplicates an individual cell at the position i, with the same features
     def make_new_cell(self, colony, i):
         old_cell = colony.cells[i]
-        new_cell = Cell(old_cell.resistant, old_cell.horizontal_transmission, old_cell.death_probability_rate, old_cell.reproduction_probability_rate)
+        new_cell = Cell(old_cell.resistant, old_cell.death_probability_rate, old_cell.reproduction_probability_rate)
         colony.cells.insert(i, new_cell)
 
     # gives a resistance "gene" from a resistant cell at position i in the list to a non-resistant cell at a position j
