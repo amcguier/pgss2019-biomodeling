@@ -30,8 +30,9 @@ class ColonyAnalyzer:
         self.time_data.append(time)
         self.resistant.append(num_resistant)
         self.nonresistant.append(num_nonresistant)
-        self.percent_resistant.append(self.percentage(num_resistant, len(colony.cells)))
-        self.percent_nonresistant.append(self.percentage_2(num_nonresistant, len(colony.cells)))
+        if len(colony.cells) != 0:
+            self.percent_resistant.append(self.percentage(num_resistant, len(colony.cells)))
+            self.percent_nonresistant.append(self.percentage_2(num_nonresistant, len(colony.cells)))
         
     def plot_data(self):
         plt.plot(self.time_data, self.resistant, label='Resistant')
