@@ -95,6 +95,8 @@ def runSimulation():
         print(index)
     analyzer.print_data()
     analyzer.plot_data()
+    analyzer.bar_graph()
+    analyzer.bar_graph_2()
     analyzer.write_to_csv(sys.argv[1])
     updater.plot_probability_rates()
 
