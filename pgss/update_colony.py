@@ -18,7 +18,7 @@ class ColonyUpdater:
     actual_time = 0
     #  nonresistant growth rate starts decreasing after -1.5; resistant growth rate after 1
     #  In log scale (so -1 corresponds to 1/10 of a ug/mL of tetracycline
-    tetracycline = 2
+    tetracycline = -5
     #  chance of mutation
     bacteria_mutation_rate = 0.0001
     #  these are the horizontal asymtotes, the death and reproduction rates should approach 0.5 as time goes to infinity
@@ -62,7 +62,7 @@ class ColonyUpdater:
             factor = 0
         elif factor > 1:
             factor = 1
-        return (self.t_reproduction - self.t_reproduction_upper_limit) * factor + t_reproduction_upper_limit
+        return (self.t_reproduction - self.t_reproduction_upper_limit) * factor + self.t_reproduction_upper_limit
 
     def calculate_inflection_tetracycline_nonresistant(self):
         factor = -0.672 * self.tetracycline + 0.0739
@@ -70,7 +70,7 @@ class ColonyUpdater:
             factor = 0
         elif factor > 1:
             factor = 1
-        return (self.t_reproduction - self.t_reproduction_upper_limit) * factor + t_reproduction_upper_limit
+        return (self.t_reproduction - self.t_reproduction_upper_limit) * factor + self.t_reproduction_upper_limit
 
     def calculate_dp_tetracycline_resistant(self, steepness, concentration):
         return self.calculate_death_probability(steepness)
