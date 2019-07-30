@@ -9,10 +9,10 @@ from pgss.update_colony import ColonyUpdater
 import random
 
 iterations = 100
-size = 200
+size = 1000
 bacteria_type = ''
 resistance = 20
-gene_transfer = True
+gene_transfer = False
 reproduction = 0
 drug_survival = 0
 _num_initial_resistant =0
@@ -88,7 +88,7 @@ def parse():
 
 def runSimulation():
     global bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant
-    colony = Colony(bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant)
+    colony = Colony(bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant, gene_transfer)
     updater = ColonyUpdater()
     analyzer = ColonyAnalyzer()
 

@@ -11,7 +11,6 @@ from pgss.cell import Cell
 class ColonyUpdater:
     hgt_probability = 1000 #Probability of hgt
     resistant_index = []
-
     # Amount of time incremented (in minutes) per iteration of simulation.
     update_time = 0.5
     # Simulation starts at time zero.
@@ -166,7 +165,8 @@ class ColonyUpdater:
                     # self.mutate_cell(colony, i)
                 i = i + 1
 
-        # self.Horizontal_Gene_Transfer(colony)
+        if colony.gene_transfer:
+            self.Horizontal_Gene_Transfer(colony)
       
         self.time_data.append(self.actual_time)
         self.resistant_reproduction_probabilities.append(resistant_rp)
