@@ -5,9 +5,13 @@ class Colony:
     _colony_size = 10000
     _num_initial_resistant = 100 # Number of forced intial resistant bacteria
     _initial_resistance_chance = 1000 # Corresponds to 1 in 10,000 chance of
+    _num_initial_resistant = 3 # Number of forced intial resistant bacteria
+    _initial_resistance_chance = 10 # Corresponds to 1 in 10,000 chance of
 
     def __init__(self, bacteria_type, colony_size, chance_resistant, reproduction_time, drug_survival_chance, _num_initial_resistant):
         self._colony_size = colony_size
+        self._initial_resistance_chance = chance_resistant
+        self._num_initial_resistant = _num_initial_resistant
         self.cells = []
 
         # Create _num_initial_resistant cells with forced resistance

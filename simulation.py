@@ -84,6 +84,7 @@ def parse():
                      #   _num_initial_resistant = int(parts[1])
 
 def runSimulation():
+    global bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant
     colony = Colony(bacteria_type,size,resistance, reproduction, drug_survival, _num_initial_resistant)
     updater = ColonyUpdater()
     analyzer = ColonyAnalyzer()
@@ -93,8 +94,11 @@ def runSimulation():
         time = updater.updateColony(colony)
         analyzer.analyze_colony(colony, time)
         print(index)
+    updater.antibioticDeath(colony)
     analyzer.print_data()
     analyzer.plot_data()
+    analyzer.bar_graph()
+    analyzer.bar_graph_2()
     analyzer.write_to_csv(sys.argv[1])
     updater.plot_probability_rates()
 

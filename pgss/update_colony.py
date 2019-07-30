@@ -7,6 +7,7 @@ import numpy as np
 from pgss.colony import Colony
 from pgss.cell import Cell
 
+
 class ColonyUpdater:
     hgt_probability = 1000 #Probability of hgt
     resistant_index = []
@@ -31,6 +32,15 @@ class ColonyUpdater:
     t_reproduction = 10
     t_reproduction_upper_limit = 30
     t_death = 20
+    # these variables deal with function antibioticDeath
+    cellCounter = 0
+    naturalGrowthRate = 0
+    naturalDeathRate = 0
+    minGrowthRate = 0
+    minInhibConcentration = 0.5
+    hillCoef = 1
+
+    ##  calculates a generic probability of reproduction from a variable "steepness" that determines the steepness of the logistic curve
 
     time_data = []
     resistant_reproduction_probabilities = []
@@ -61,6 +71,12 @@ class ColonyUpdater:
         elif factor > 1:
             factor = 1
         return (self.t_reproduction - self.t_reproduction_upper_limit) * factor + t_reproduction_upper_limit
+
+    def calculate_dp_tetracycline_resistant(self, steepness, concentration):
+        return self.calculate_death_probability(steepness)
+    def calculate_dp_tetracycline_nonresistant(self, steepness, concentration):
+        return self.calculate_death_probability(steepness)
+
 
 
     # The following "individual methods" kill_cell, make_new_cell, transfer_plasmid, and mutate_cell operate on the individual cell
@@ -123,9 +139,11 @@ class ColonyUpdater:
             #  check if the cell should be killed
             if (cell.resistant and x < resistant_dp) or (not cell.resistant and x < nonresistant_dp):
                 self.kill_cell(colony, i)
+                self.naturalDeathRate += 1
             #  check if the cell should reproduce
             elif (cell.resistant and x > 1 - resistant_rp) or (not cell.resistant and x > 1 - nonresistant_rp):
                 # Cell reproduces
+                self.naturalGrowthRate += 1
                 self.make_new_cell(colony, i)
                 i = i + 2
             else:
@@ -147,6 +165,25 @@ class ColonyUpdater:
         self.nonresistant_death_probabilities.append(nonresistant_dp)
 
         return self.actual_time
+    
+    
+    
+    #this function will deal with the hill equation as it relates to natural growth and death
+    def antibioticDeath(self, colony):
+    #run through each position in colony.cells, check for resistance. if non-resistance, add one to the counter
+        for i in range(0,len(colony.cells)):
+            cell = colony.cells[i]
+            if not cell.resistant:
+                self.cellCounter += 1
+                
+        #the hill equation estimates antibiotic deaths
+        bob = self.naturalGrowthRate - self.naturalDeathRate
+        jeff = math.pow(self.tetracycline,self.hillCoef)
+        deathRate = (bob - self.minGrowthRate)*(jeff/(jeff + ((-1 * self.minGrowthRate/bob)*math.pow(self.minInhibConcentration,self.hillCoef))))
+        print("This is the death rate:")
+        print(deathRate)
+    
+        return deathRate
 
     def plot_probability_rates(self):
         plt.plot(self.time_data, self.resistant_reproduction_probabilities, label='Resistant Reproduction Prob.')
