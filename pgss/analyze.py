@@ -39,6 +39,7 @@ class ColonyAnalyzer:
         plt.legend(loc='upper left')
         plt.xlabel('Time')
         plt.ylabel('Number of Bacteria')
+        plt.title('Growth Curve')
         plt.show()
 
     # file name can be passed in with command line arguments  
@@ -65,6 +66,7 @@ class ColonyAnalyzer:
         p2 = plt.bar(ind, self.percent_nonresistant, width, bottom=self.percent_resistant, color= 'xkcd:orange')
         
         plt.ylabel('Percentage')
+        plt.xlabel('Generations')
         plt.title('Percent Resistant and Nonresistant')
         plt.legend((p1, p2), ('Resistant', 'Nonresistant'))
         plt.show()
@@ -79,7 +81,7 @@ class ColonyAnalyzer:
         p2 = plt.bar(ind, first_and_last, width, bottom=first_and_last_2, color= 'xkcd:azure')
         
         plt.ylabel('Percentage')
-        plt.title('Percent Resistant and Nonresistant Over Time')
+        plt.title('Percent Resistant and Nonresistant')
         plt.xticks(ind, ('Start','End'))
         plt.legend((p1, p2), ('Nonresistant', 'Resistant'))
         plt.show()
