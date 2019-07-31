@@ -8,15 +8,15 @@ from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 import random
 
-iterations = 100
-size = 1000
+iterations = 10
+size = 100
 bacteria_type = ''
-resistance = 20
-gene_transfer = False
+resistance = 100
+gene_transfer = True
 reproduction = 0
 drug_survival = 0
-_num_initial_resistant =0
-addingantibiotics = True
+_num_initial_resistant = 300
+addingantibiotics = False
 
 
 import csv
