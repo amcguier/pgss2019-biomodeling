@@ -8,14 +8,14 @@ from pgss.cell import Cell
 from pgss.update_colony import ColonyUpdater
 import random
 
-iterations = 10
-size = 100
+iterations = 100
+size = 750
 bacteria_type = ''
 resistance = 100
 gene_transfer = True
 reproduction = 0
 drug_survival = 0
-_num_initial_resistant = 300
+_num_initial_resistant = 30
 addingantibiotics = False
 
 
@@ -93,7 +93,7 @@ def runSimulation():
     analyzer = ColonyAnalyzer()
 
     analyzer.analyze_colony(colony, 0)
-    placement = random.randint(2,5)
+    placement = 4
     for index in range(iterations):
         time = updater.updateColony(colony)
         analyzer.analyze_colony(colony, time)
@@ -102,7 +102,7 @@ def runSimulation():
             updater.turnonantibiotics()
             
 
-    updater.antibioticDeath(colony)
+    #updater.antibioticDeath(colony)
     analyzer.print_data()
     analyzer.plot_data()
     analyzer.bar_graph()

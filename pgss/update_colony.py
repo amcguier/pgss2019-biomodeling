@@ -33,7 +33,7 @@ class ColonyUpdater:
 
     #  this is the timepoint of the inflection point of the logistic curve
     t_reproduction = 10
-    t_reproduction_upper_limit = 30
+    t_reproduction_upper_limit = 20
     t_death = 20
     # these variables deal with function antibioticDeath
     cellCounter = 0
@@ -81,7 +81,7 @@ class ColonyUpdater:
         return self.calculate_death_probability(steepness)
 
     def turnonantibiotics(self):
-        self.tetracycline = random.randint(-2, 2)
+        self.tetracycline = 2
        
     def tetracyclineconcentration(self):    
         print('Tetracycline Concentration:')
